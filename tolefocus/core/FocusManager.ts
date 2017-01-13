@@ -1,8 +1,8 @@
 import { FocusGroup } from "./FocusGroup";
 import { domProcessor } from "../dom/DomProcessor";
 
-export const focusGroupAttributeName = "focusGroup";
-export const focusOrderAttributeName = "focusOrder";
+export const focusGroupAttributeName = "focus-group";
+export const focusOrderAttributeName = "focus-order";
 export const focusableTagNames = ["a", "select", "button", "input", "textarea"];
 
 export class FocusManager {
@@ -50,7 +50,7 @@ export class FocusManager {
         if (!rootElement) {
             rootElement = document.body;
         }
-        this._root = new FocusGroup(null, null);
+        this._root = new FocusGroup(null, null, "loop", "loop");
 
         this._enabled = true;
 
