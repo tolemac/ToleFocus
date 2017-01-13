@@ -27,4 +27,12 @@ export class FocusGroupDirective {
         }
         this.group.add(elem);
     }
+
+    ngOnDestroy() {
+        if (this.parentGroup) {
+            this.parentGroup.group.remove(this.group);
+        } else {
+            focusManager.root.remove(this.group);
+        }
+    }
 }

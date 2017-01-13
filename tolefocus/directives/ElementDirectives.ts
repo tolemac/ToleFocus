@@ -3,12 +3,21 @@ import { FocusGroupDirective } from "./FocusGroupDirective";
 
 export class FocusElementDirectiveBase {
     protected focusOrder: number;
+    private added = false;
+
     constructor(protected fg: FocusGroupDirective, protected element: ElementRef) {
     }
 
     ngOnInit() {
         if (this.fg) {
+            this.added = true;
             this.fg.registerChild(this.element.nativeElement, this.focusOrder);
+        }
+    }
+
+    ngOnDestroy() {
+        if (this.added) {
+            this.fg.group.remove(this.element.nativeElement);
         }
     }
 }
