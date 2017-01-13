@@ -4,49 +4,7 @@ import {
     focusGroupAttributeName, focusManager
 } from "../core/FocusManager";
 
-export class FocusObserver {
-    private _enabled = false;
-    private _rootElement: HTMLElement;
-    private observer = new MutationObserver((mutations) => this.observerCallback(mutations));
-
-    get enabled() {
-        return this._enabled;
-    }
-
-    get rootElement() {
-        return this._rootElement;
-    }
-
-    disable() {
-        if (!this._enabled) {
-            return;
-        }
-        this.observer.disconnect();
-        this._enabled = false;
-    }
-
-    enableOnBody() {
-        this.enable(document.body);
-    }
-
-    enable(rootElement: HTMLElement) {
-        if (this._enabled) {
-            this.disable();
-        }
-
-        const config = {
-            // attributes: true,
-            childList: true,
-            characterData: true,
-            subtree: true
-        };
-        this.observer.observe(rootElement as Node, config);
-    }
-
-    observerCallback(mutations: MutationRecord[]) {
-        mutations.forEach((mutation) => this.processMutation(mutation));
-    }
-
+class DomProcessor {
     getElementInfo(element: HTMLElement) {
         return element[ELEMENT_INFO_TOKEN] as ElementInfo;
     }
@@ -83,17 +41,6 @@ export class FocusObserver {
         }
     }
 
-    processMutation(mutation: MutationRecord) {
-        if (mutation.type === "childList") {
-            for (let i = 0, j = mutation.addedNodes.length; i < j; i++) {
-                this.processAddedElement(mutation.addedNodes.item(i) as HTMLElement);
-            }
-            for (let i = 0, j = mutation.removedNodes.length; i < j; i++) {
-                this.processRemovedElement(mutation.removedNodes.item(i) as HTMLElement);
-            }
-        }
-    }
-
     locateParentGroupElement(element: HTMLElement): HTMLElement {
         let current = element;
         while ((current = current.parentElement) !== null) {
@@ -106,7 +53,9 @@ export class FocusObserver {
 
     getElementOrder(element: HTMLElement) {
         const focusOrderAttributeValue = element.getAttribute(focusOrderAttributeName);
-        if (focusOrderAttributeValue !== null && focusOrderAttributeValue !== undefined) {
+        if (focusOrderAttributeValue !== null &&
+            focusOrderAttributeValue !== undefined &&
+            focusOrderAttributeValue !== "") {
             return parseInt(focusOrderAttributeValue, 10);
         }
     }
@@ -139,6 +88,15 @@ export class FocusObserver {
             this.addElement(element);
         }
     }
+
+    processFromElement(rootElement: HTMLElement) {
+        const selector = [...focusableTagNames, `[${focusGroupAttributeName}]`, `[${focusOrderAttributeName}]`].join(",");
+        const elements = rootElement.querySelectorAll(selector);
+
+        for (let i = 0, j = elements.length; i < j; i++) {
+            this.processAddedElement(elements.item(i) as HTMLElement);
+        }
+    }
 }
 
-export const focusObserver = new FocusObserver();
+export const domProcessor = new DomProcessor();

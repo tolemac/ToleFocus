@@ -1,11 +1,20 @@
 import { FocusGroup } from "./FocusGroup";
+import { domProcessor } from "../dom/DomProcessor";
 
 export const focusGroupAttributeName = "focusGroup";
 export const focusOrderAttributeName = "focusOrder";
 export const focusableTagNames = ["a", "select", "button", "input", "textarea"];
 
 export class FocusManager {
-    root = new FocusGroup(null, null);
+    private _enabled = false;
+    private _root: FocusGroup;
+
+    get root() {
+        return this._root;
+    }
+    get enabled() {
+        return this._enabled;
+    }
 
     focusNext(currentElement: HTMLElement) {
         const {group} = this.root.locateElementRecursively(currentElement);
@@ -25,6 +34,27 @@ export class FocusManager {
                 element.focus();
             }
         }
+    }
+
+    disable() {
+        if (!this._enabled) {
+            return;
+        }
+        this._enabled = false;
+    }
+
+    enable(rootElement?: HTMLElement) {
+        if (this._enabled) {
+            this.disable();
+        }
+        if (!rootElement) {
+            rootElement = document.body;
+        }
+        this._root = new FocusGroup(null, null);
+
+        this._enabled = true;
+
+        domProcessor.processFromElement(rootElement);
     }
 }
 

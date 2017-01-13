@@ -18,7 +18,7 @@ export class ElementEventsHandler {
     }
 
     keyPressHandler = (event: KeyboardEvent) => {
-        if (event.target === this.element) {
+        if (focusManager.enabled) {
             if (event.keyCode === TAB_KEYCODE) {
                 if (event.shiftKey) {
                     focusManager.focusPrior(this.element);
