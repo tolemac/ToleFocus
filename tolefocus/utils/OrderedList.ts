@@ -23,7 +23,25 @@ export class OrderedList<TItem> {
     }
 
     private reorder() {
-        this.orderedItems = [... this.items];
+        const result = [] as OrderedItem<TItem>[];
+        const withOrderItems = this.items.filter(item => !!item.order);
+        const withoutOrderItems = this.items.filter(item => !item.order);
+        withOrderItems.forEach(item => {
+            result[item.order - 1] = item;
+        });
+        let i2 = 0;
+        for (let i = 0, j = this.items.length; i < j; i++) {
+            if (result[i] === undefined && i2 < withoutOrderItems.length) {
+                result[i] = withoutOrderItems[i2++];
+            }
+        }
+
+        this.orderedItems = [];
+        result.forEach(item => {
+            if (item !== undefined) {
+                this.orderedItems.push(item);
+            }
+        });
     }
 
     remove(object: TItem) {
