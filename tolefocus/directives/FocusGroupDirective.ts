@@ -1,9 +1,9 @@
 import { Directive, ElementRef, Optional, SkipSelf, Host } from "@angular/core";
-import { focusManager } from "../core/FocusManager";
+import { focusManager, focusGroupAttributeName } from "../core/FocusManager";
 import { FocusGroup } from "../core/FocusGroup";
 
 @Directive({
-    selector: "[focusGroup]"
+    selector: `[${focusGroupAttributeName}]`
 })
 export class FocusGroupDirective {
     group: FocusGroup;

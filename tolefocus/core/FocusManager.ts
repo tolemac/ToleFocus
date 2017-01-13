@@ -1,5 +1,9 @@
 import { FocusGroup } from "./FocusGroup";
 
+export const focusGroupAttributeName = "focusGroup";
+export const focusOrderAttributeName = "focusOrder";
+export const focusableTagNames = ["a", "select", "button", "input", "textarea"];
+
 export class FocusManager {
     root = new FocusGroup(null, null);
 

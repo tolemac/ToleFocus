@@ -1,5 +1,6 @@
 import { Directive, ElementRef, Input } from "@angular/core";
 import { FocusGroupDirective } from "./FocusGroupDirective";
+import { focusOrderAttributeName, focusableTagNames } from "../core/FocusManager";
 
 export class FocusElementDirectiveBase {
     protected focusOrder: number;
@@ -23,31 +24,31 @@ export class FocusElementDirectiveBase {
 }
 
 @Directive({
-    selector: "[focusOrder]"
+    selector: `[${focusOrderAttributeName}]`
 })
 export class FocusOrderDirective extends FocusElementDirectiveBase {
     @Input() focusOrder: number;
-    constructor (fg: FocusGroupDirective, element: ElementRef) {
+    constructor(fg: FocusGroupDirective, element: ElementRef) {
         super(fg, element);
     }
 }
 
 function createDirective(selector: string) {
-    @Directive({selector})
+    @Directive({ selector })
     class ElementDirective extends FocusElementDirectiveBase {
-        constructor (fg: FocusGroupDirective, element: ElementRef) {
+        constructor(fg: FocusGroupDirective, element: ElementRef) {
             super(fg, element);
         }
     }
     return ElementDirective;
 }
 
-const focusableSelectors = ["a", "select", "button", "input", "textarea"];
+
 
 export function createElementDirectives() {
     const result = [] as any[];
 
-    for (let selector of focusableSelectors) {
+    for (let selector of focusableTagNames) {
         result.push(createDirective(selector));
     }
 

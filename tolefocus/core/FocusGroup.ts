@@ -2,11 +2,11 @@ import { OrderedList } from "./OrderedList";
 import { ElementEventsHandler } from "./ElementEventsHandler";
 
 type GroupItem = FocusGroup | HTMLElement;
-const ELEMENT_INFO_TOKEN = "TOLEFOCUS_INFO";
+export const ELEMENT_INFO_TOKEN = "TOLEFOCUS_INFO";
 
 type LoopBehavior = "stop" | "loop";
 
-type ElementInfo = {
+export type ElementInfo = {
     parentGroup: FocusGroup;
     group: FocusGroup;
     eventsHandler: ElementEventsHandler;
@@ -14,6 +14,7 @@ type ElementInfo = {
 
 export class FocusGroup {
     items = new OrderedList<GroupItem>();
+
     get count() {
         return this.items.orderedItems.length;
     }
@@ -35,8 +36,8 @@ export class FocusGroup {
                 };
             }
         } else {
-            if (!item[ELEMENT_INFO_TOKEN]) {
-                item[ELEMENT_INFO_TOKEN] = {
+            if (!item.groupElement[ELEMENT_INFO_TOKEN]) {
+                item.groupElement[ELEMENT_INFO_TOKEN] = {
                     parentGroup: this,
                     group: item
                 };
