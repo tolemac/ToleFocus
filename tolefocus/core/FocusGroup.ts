@@ -2,9 +2,15 @@ import { OrderedList } from "./OrderedList";
 import { ElementEventsHandler } from "./ElementEventsHandler";
 
 type GroupItem = FocusGroup | HTMLElement;
-const HANDLED_TOKEN = "HANDLED_TOKEN";
+const ELEMENT_INFO_TOKEN = "TOLEFOCUS_INFO";
 
 type LoopBehavior = "stop" | "loop";
+
+type ElementInfo = {
+    parentGroup: FocusGroup;
+    group: FocusGroup;
+    eventsHandler: ElementEventsHandler;
+};
 
 export class FocusGroup {
     items = new OrderedList<GroupItem>();
@@ -22,15 +28,25 @@ export class FocusGroup {
         if (!(item instanceof FocusGroup)) {
             item.setAttribute("tabindex", "-1");
 
-            if (!item[HANDLED_TOKEN]) {
-                item[HANDLED_TOKEN] = new ElementEventsHandler(item);
+            if (!item[ELEMENT_INFO_TOKEN]) {
+                item[ELEMENT_INFO_TOKEN] = {
+                    parentGroup: this,
+                    eventsHandler: new ElementEventsHandler(item)
+                };
+            }
+        } else {
+            if (!item[ELEMENT_INFO_TOKEN]) {
+                item[ELEMENT_INFO_TOKEN] = {
+                    parentGroup: this,
+                    group: item
+                };
             }
         }
     }
 
     remove(item: GroupItem) {
-        if (!(item instanceof FocusGroup) && item[HANDLED_TOKEN]) {
-            (item[HANDLED_TOKEN] as ElementEventsHandler).unhandle();
+        if (!(item instanceof FocusGroup) && item[ELEMENT_INFO_TOKEN]) {
+            (item[ELEMENT_INFO_TOKEN] as ElementInfo).eventsHandler.unhandle();
         }
         this.items.remove(item);
     }
