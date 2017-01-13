@@ -19,8 +19,12 @@ export class FocusGroup {
 
     add(item: GroupItem, focusOrder?: number) {
         this.items.add(item, focusOrder);
-        if (!(item instanceof FocusGroup) && !item[HANDLED_TOKEN]) {
-            item[HANDLED_TOKEN] = new ElementEventsHandler(item);
+        if (!(item instanceof FocusGroup)) {
+            item.setAttribute("tabindex", "-1");
+
+            if (!item[HANDLED_TOKEN]) {
+                item[HANDLED_TOKEN] = new ElementEventsHandler(item);
+            }
         }
     }
 

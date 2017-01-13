@@ -5,6 +5,7 @@ import { FocusOrderDirective, createElementDirectives } from "./directives/Eleme
 
 const exportedDeclarations = [
     FocusGroupDirective,
+    FocusOrderDirective,
     ... createElementDirectives()
 ];
 
