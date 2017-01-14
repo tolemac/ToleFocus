@@ -1,7 +1,7 @@
 # ToleFocus
 > JavaScript Framework agnostic Focus Manager coded in TypeScript
 
-**This library is in alpha state, use it at your own risk. Pull request are welcome.**  
+**This library is in alpha state, use it at your own risk. Pull requests are welcome.**  
 **There aren't test. I would love it if you could make them.**
 
 ToleFocus is a small library to manage focus on JavaScript web applications. ToleFocus use ES6 methods, like `array.findIndex`, and require some polyfill like [core-js](https://github.com/zloirock/core-js) in order to work in old browsers, like IE.
