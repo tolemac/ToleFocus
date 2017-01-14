@@ -1,4 +1,4 @@
-import { ELEMENT_INFO_TOKEN, ElementInfo, FocusGroup } from "../core/FocusGroup";
+import { ELEMENT_INFO_TOKEN, ElementInfo, FocusGroup, LoopBehavior } from "../core/FocusGroup";
 import {
     focusableTagNames, focusOrderAttributeName,
     focusGroupAttributeName, focusManager
@@ -60,13 +60,34 @@ class DomProcessor {
         }
     }
 
+    getGroupProperties(element: HTMLElement) {
+        const value = element.getAttribute(focusGroupAttributeName);
+        if (value === "") {
+            return { head: undefined, tail: undefined };
+        }
+        const parts = value.split(" ").filter(part => part !== "").filter((value, index) => index < 2);
+
+        let tail: string, head: string;
+
+        if (parts.length === 1) {
+            tail = parts[0];
+            head = parts[0];
+        } else if (parts.length === 2) {
+            head = parts[0];
+            tail = parts[1];
+        }
+
+        return { head, tail };
+    }
+
     addGroup(element: HTMLElement) {
         const parentGroupElement = this.locateParentGroupElement(element);
         const parentGroup = parentGroupElement ?
             this.getElementInfo(parentGroupElement).group :
             focusManager.root;
-
-        parentGroup.add(new FocusGroup(parentGroup, element), this.getElementOrder(element));
+        const {head, tail} = this.getGroupProperties(element);
+        const group = new FocusGroup(parentGroup, element, head as LoopBehavior, tail as LoopBehavior);
+        parentGroup.add(group, this.getElementOrder(element));
     }
 
     addElement(element: HTMLElement) {

@@ -4,7 +4,7 @@ import { ElementEventsHandler } from "./ElementEventsHandler";
 type GroupItem = FocusGroup | HTMLElement;
 export const ELEMENT_INFO_TOKEN = "TOLEFOCUS_INFO";
 
-type LoopBehavior = "stop" | "loop";
+export type LoopBehavior = "" | "stop" | "loop";
 
 export type ElementInfo = {
     parentGroup: FocusGroup;
@@ -20,8 +20,8 @@ export class FocusGroup {
     }
 
     constructor(public parentGroup: FocusGroup, public groupElement: HTMLElement,
-        private headBehavior: LoopBehavior = "stop",
-        private tailBehavior: LoopBehavior = "stop") {
+        private headBehavior: LoopBehavior = "",
+        private tailBehavior: LoopBehavior = "") {
     }
 
     add(item: GroupItem, focusOrder?: number) {
@@ -118,6 +118,8 @@ export class FocusGroup {
             } else {
                 if (this.tailBehavior === "loop") {
                     nextItemIndex = 0;
+                } else if (this.tailBehavior === "stop") {
+                    nextItemIndex = index;
                 } else {
                     if (this.parentGroup) {
                         const parentNext = this.parentGroup.getNextElement(this.groupElement);
@@ -150,6 +152,8 @@ export class FocusGroup {
             } else {
                 if (this.headBehavior === "loop") {
                     priorItemIndex = this.items.orderedItems.length - 1;
+                } else if (this.headBehavior === "stop") {
+                    priorItemIndex = index;
                 } else {
                     if (this.parentGroup) {
                         const parentPrior = this.parentGroup.getPriorElement(this.groupElement);
