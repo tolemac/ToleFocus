@@ -95,4 +95,21 @@ You can send focus to other controls like `div` or `spans`, you have to set `foc
 </di>
 ````
 
+### Autofocus
 
+You can set an element as autofocus to set focus on it automatically. If you have the `focusObserver` enabled the element will focus when it's added to the DOM.
+
+```` html
+<input />
+<input />
+<input autofocus /> <!-- gets the focus automatically -->
+````
+
+If you want to hide a element and get focused when it becomes visible you can set `observe` value to `autofocus` attribute.
+
+```` html
+<input />
+<input />
+<input autofocus="observe" style="display: none" />  <!-- gets the focus automatically when become visible -->
+<button onclick="showHiddenInput()">Show</button>
+````

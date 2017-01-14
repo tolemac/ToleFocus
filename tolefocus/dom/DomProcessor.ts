@@ -1,8 +1,11 @@
 import { ELEMENT_INFO_TOKEN, ElementInfo, FocusGroup, LoopBehavior } from "../core/FocusGroup";
 import {
-    focusableTagNames, focusOrderAttributeName,
-    focusGroupAttributeName, focusManager
+    focusableTagNames, focusOrderAttributeName, autofocusAttributeName,
+    focusGroupAttributeName, focusManager, autofocusInspectAttributeValue
 } from "../core/FocusManager";
+import { FocusabilityInspector } from "./FocusabilityInspector";
+
+export const INSPECT_TOKEN = "TOLEFOCUS_INSPECTOR";
 
 class DomProcessor {
     getElementInfo(element: HTMLElement) {
@@ -17,6 +20,10 @@ class DomProcessor {
     removeElement(element: HTMLElement) {
         const info = this.getElementInfo(element);
         info.parentGroup.remove(element);
+
+        if (element[INSPECT_TOKEN]) {
+            (element[INSPECT_TOKEN] as FocusabilityInspector).stop();
+        }
     }
 
     isGroup(element: HTMLElement) {
@@ -90,6 +97,12 @@ class DomProcessor {
         parentGroup.add(group, this.getElementOrder(element));
     }
 
+    canElementGetFocus(element: HTMLElement) {
+        const visible = element.offsetParent !== null;
+        const disable = !!element["disabled"];
+        return visible && !disable;
+    }
+
     addElement(element: HTMLElement) {
         const parentGroupElement = this.locateParentGroupElement(element);
         const parentGroup = parentGroupElement ?
@@ -97,6 +110,19 @@ class DomProcessor {
             focusManager.root;
 
         parentGroup.add(element, this.getElementOrder(element));
+        const autofocusValue = element.getAttribute(autofocusAttributeName);
+        if (autofocusValue !== null && autofocusValue !== undefined) {
+            if (this.canElementGetFocus(element)) {
+                element.focus();
+            }
+            if (autofocusValue === autofocusInspectAttributeValue) {
+                element[INSPECT_TOKEN] = new FocusabilityInspector(element, (isFocusable) => {
+                    if (isFocusable) {
+                        element.focus();
+                    }
+                });
+            }
+        }
     }
 
     processAddedElement(element: HTMLElement) {

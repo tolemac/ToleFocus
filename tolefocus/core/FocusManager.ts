@@ -3,7 +3,9 @@ import { domProcessor } from "../dom/DomProcessor";
 
 export const focusGroupAttributeName = "focus-group";
 export const focusOrderAttributeName = "focus-order";
+export const autofocusAttributeName = "autofocus";
 export const focusableTagNames = ["a", "select", "button", "input", "textarea"];
+export const autofocusInspectAttributeValue = "observe";
 
 export class FocusManager {
     private _enabled = false;
@@ -16,17 +18,11 @@ export class FocusManager {
         return this._enabled;
     }
 
-    canElementGetFocus(element: HTMLElement) {
-        const visible = element.offsetParent !== null;
-        const disable = !!element["disabled"];
-        return visible && !disable;
-    }
-
     focusNext(currentElement: HTMLElement) {
         const {group} = this.root.locateElementRecursively(currentElement);
         if (group) {
             let element = group.getNextElement(currentElement);
-            while (!this.canElementGetFocus(element)) {
+            while (!domProcessor.canElementGetFocus(element)) {
                 const info = domProcessor.getElementInfo(element);
                 element = info.parentGroup.getNextElement(element);
             }
@@ -39,7 +35,11 @@ export class FocusManager {
     focusPrior(currentElement: HTMLElement) {
         const {group} = this.root.locateElementRecursively(currentElement);
         if (group) {
-            const element = group.getPriorElement(currentElement);
+            let element = group.getPriorElement(currentElement);
+            while (!domProcessor.canElementGetFocus(element)) {
+                const info = domProcessor.getElementInfo(element);
+                element = info.parentGroup.getPriorElement(element);
+            }
             if (element) {
                 element.focus();
             }
