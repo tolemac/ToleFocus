@@ -16,10 +16,20 @@ export class FocusManager {
         return this._enabled;
     }
 
+    canElementGetFocus(element: HTMLElement) {
+        const visible = element.offsetParent !== null;
+        const disable = !!element["disabled"];
+        return visible && !disable;
+    }
+
     focusNext(currentElement: HTMLElement) {
         const {group} = this.root.locateElementRecursively(currentElement);
         if (group) {
-            const element = group.getNextElement(currentElement);
+            let element = group.getNextElement(currentElement);
+            while (!this.canElementGetFocus(element)) {
+                const info = domProcessor.getElementInfo(element);
+                element = info.parentGroup.getNextElement(element);
+            }
             if (element) {
                 element.focus();
             }
