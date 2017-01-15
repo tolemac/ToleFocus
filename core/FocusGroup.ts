@@ -1,4 +1,4 @@
-import { OrderedList } from "../Utils/OrderedList";
+import { OrderedList } from "../utils/OrderedList";
 import { ElementEventsHandler } from "./ElementEventsHandler";
 
 export type GroupItem = FocusGroup | HTMLElement;

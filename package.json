@@ -2,7 +2,6 @@
   "name": "tolefocus",
   "version": "0.0.1",
   "description": "Agnostic Framework Focus Manager",
-  "main": "./dist/index.js",
   "scripts": {
     "compile": "tsc",
     "build": "tsc && rollup -c",

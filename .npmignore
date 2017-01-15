@@ -1,14 +1,15 @@
-./core/**/*
-./dom/**/*
-./dist/**/*.js
-!./dist/bundles/**/*
+core/**/*
+dom/**/*
+dist/**/*.js
+dist/index.js
+!dist/bundles/**/*
 node_modules
-./utils/**/*
+utils/**/*
 .gitinore
 .npmignore
-./index.ts
-./readme.md
-./rolloup.config.js
-./tsconfig.json
-./tslint.json
+index.ts
+readme.md
+rollup.config.js
+tsconfig.json
+tslint.json
 
