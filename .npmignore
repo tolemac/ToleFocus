@@ -1,8 +1,5 @@
 core/**/*
 dom/**/*
-dist/**/*.js
-dist/index.js
-!dist/bundles/**/*
 node_modules
 utils/**/*
 .gitinore
