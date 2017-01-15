@@ -3,3 +3,4 @@ npm-debug.*
 link-checker-results.txt
 **/*.js
 *.js.map
+dist/**/*
