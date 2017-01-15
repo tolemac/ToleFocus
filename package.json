@@ -4,7 +4,7 @@
   "description": "Agnostic Framework Focus Manager",
   "scripts": {
     "compile": "tsc",
-    "build": "tsc && rollup -c",
+    "build": "tsc && rollup -c rollup.config.js && rollup -c rollup.min.config.js",
     "rollup": "rollup -c"
   },
   "entry": "./dist/index.js",
