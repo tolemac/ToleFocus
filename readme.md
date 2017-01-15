@@ -1,4 +1,5 @@
 # ToleFocus
+[![NPM version](https://badge.fury.io/js/tolefocus.svg)](http://badge.fury.io/js/tolefocus) [![Dependency Status](https://david-dm.org/tolemac/tolefocus.svg)](https://david-dm.org/tolemac/tolefocus) [![devDependency Status](https://david-dm.org/tolemac/tolefocus/dev-status.svg)](https://david-dm.org/tolemac/tolefocus#info=devDependencies)
 > JavaScript Framework agnostic Focus Manager coded in TypeScript
 
 **This library is in alpha state, use it at your own risk. Pull requests are welcome.**  
