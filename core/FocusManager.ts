@@ -60,7 +60,7 @@ export class FocusManager {
         if (!rootElement) {
             rootElement = document.body;
         }
-        this._root = new FocusGroup(null, null, "loop", "loop");
+        this._root = new FocusGroup(null, rootElement, "loop", "loop");
 
         this._enabled = true;
 

@@ -7,12 +7,12 @@ export class OrderedList<TItem> {
     private items: OrderedItem<TItem>[] = [];
     orderedItems: OrderedItem<TItem>[] = [];
 
-    add(object: TItem, order?: number) {
-        let index = this.items.findIndex((current) => current.object === object);
-        if (index >= 0) {
+    /*add(object: TItem, order?: number) {
+        let existingIndex = this.items.findIndex((current) => current.object === object);
+        if (existingIndex >= 0) {
             // If exists update order if it's passed.
             if (order >= 0) {
-                this.items[index].order = order;
+                this.items[existingIndex].order = order;
                 this.reorder();
             }
         } else {
@@ -20,6 +20,26 @@ export class OrderedList<TItem> {
             this.items.push({ object, order });
             this.reorder();
         }
+    }*/
+
+    insert(index: number, object: TItem, order?: number) {
+        let existingIndex = this.items.findIndex((current) => current.object === object);
+        if (existingIndex >= 0) {
+            // If exists in the same position update order if it's passed and return.
+            if (existingIndex === index && order >= 0) {
+                this.items[existingIndex].order = order;
+                this.reorder();
+                return;
+            } else { // If new index is different remove element form array.
+                this.items.splice(existingIndex, 1);
+            }
+        }
+        if (!index && index !== 0) {
+            this.items.push({ object, order });
+        } else {
+            this.items.splice(index, 0, { object, order });
+        }
+        this.reorder();
     }
 
     private reorder() {

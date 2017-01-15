@@ -1,5 +1,6 @@
 import { OrderedList } from "../utils/OrderedList";
 import { ElementEventsHandler } from "./ElementEventsHandler";
+import { domProcessor } from "../dom/DomProcessor";
 
 export type GroupItem = FocusGroup | HTMLElement;
 export const ELEMENT_INFO_TOKEN = "TOLEFOCUS_INFO";
@@ -25,8 +26,10 @@ export class FocusGroup {
     }
 
     add(item: GroupItem, focusOrder?: number) {
-        this.items.add(item, focusOrder);
+        let index: number;
+
         if (!(item instanceof FocusGroup)) {
+            index = domProcessor.getDOMOrderInGroup(this.groupElement, item);
             item.setAttribute("tabindex", "-1");
 
             if (!item[ELEMENT_INFO_TOKEN]) {
@@ -36,6 +39,7 @@ export class FocusGroup {
                 };
             }
         } else {
+            index = domProcessor.getDOMOrderInGroup(this.groupElement, item.groupElement);
             if (!item.groupElement[ELEMENT_INFO_TOKEN]) {
                 item.groupElement[ELEMENT_INFO_TOKEN] = {
                     parentGroup: this,
@@ -43,6 +47,7 @@ export class FocusGroup {
                 };
             }
         }
+        this.items.insert(index, item, focusOrder);
     }
 
     remove(item: GroupItem) {

@@ -9,6 +9,11 @@ export { ElementInfo } from "../core/FocusGroup";
 export const INSPECT_TOKEN = "TOLEFOCUS_INSPECTOR";
 
 export class DomProcessor {
+
+    private getFocusElementsSelector() {
+        return [...focusableTagNames, "[" + focusGroupAttributeName + "]", "[" + focusOrderAttributeName + "]"].join(",");
+    }
+
     removeGroup(element: HTMLElement) {
         const info = this.getElementInfo(element);
         info.parentGroup.remove(info.group);
@@ -68,6 +73,32 @@ export class DomProcessor {
         }
     }
 
+    isGroupChildren(group: HTMLElement, element: HTMLElement) {
+        while (element.parentElement !== null) {
+            if (this.isGroup(element.parentElement) || element.parentElement === document.body) {
+                return element.parentElement === group;
+            }
+            element = element.parentElement;
+        }
+        return false;
+    }
+
+    getDOMOrderInGroup(groupElement: HTMLElement, element: HTMLElement) {
+        const elements = groupElement.querySelectorAll(this.getFocusElementsSelector());
+        const directChildren: any[] = [];
+        for (let i = 0, j = elements.length; i < j; i++) {
+            const current = elements.item(i);
+            if (this.isGroupChildren(groupElement, current as HTMLElement)) {
+                directChildren.push(current);
+            }
+        }
+        for (let i = 0, j = directChildren.length; i < j; i++) {
+            if (directChildren[i] === element) {
+                return i;
+            }
+        };
+    }
+
     getGroupProperties(element: HTMLElement) {
         const value = element.getAttribute(focusGroupAttributeName);
         if (value === "") {
@@ -95,6 +126,7 @@ export class DomProcessor {
             focusManager.root;
         const {head, tail} = this.getGroupProperties(element);
         const group = new FocusGroup(parentGroup, element, head as LoopBehavior, tail as LoopBehavior);
+
         parentGroup.add(group, this.getElementOrder(element));
     }
 
@@ -138,8 +170,7 @@ export class DomProcessor {
     }
 
     processFromElement(rootElement: HTMLElement) {
-        const selector = [...focusableTagNames, `[${focusGroupAttributeName}]`, `[${focusOrderAttributeName}]`].join(",");
-        const elements = rootElement.querySelectorAll(selector);
+        const elements = rootElement.querySelectorAll(this.getFocusElementsSelector());
 
         for (let i = 0, j = elements.length; i < j; i++) {
             this.processAddedElement(elements.item(i) as HTMLElement);
