@@ -8,6 +8,12 @@ ToleFocus is a small library to manage focus on JavaScript web applications. Tol
 
 ToleFocus is highly inspired on [Angular Focus Manager](https://github.com/obogo/angular-focusmanager) coded by [Rob Tylor](https://github.com/roboncode).
 
+## Installation
+
+````
+npm install tolefocus --save
+````
+
 ## Usage
 
 To enable the focus manager you have to import `focusManager` from `tolefocus` module and call `enable` method.
@@ -112,4 +118,22 @@ If you want to hide a element and get focused when it becomes visible you can se
 <input />
 <input autofocus="observe" style="display: none" />  <!-- gets the focus automatically when become visible -->
 <button onclick="showHiddenInput()">Show</button>
+````
+
+## SystemJS config
+
+To use using SystemJS you have to map tolefocus to the distributed bundle:
+
+````
+System.config({
+    ...
+    ...
+    map: {
+      tolefocus: './node_modules/tolefocus/dist/bundles/tolefocus.bundle.umd.js'
+      ...
+      ...
+    },
+    ...
+    ...
+})
 ````
