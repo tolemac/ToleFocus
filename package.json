@@ -1,6 +1,6 @@
 {
   "name": "tolefocus",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Agnostic Framework Focus Manager",
   "scripts": {
     "compile": "tsc",
