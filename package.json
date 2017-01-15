@@ -1,0 +1,34 @@
+{
+  "name": "tolefocus",
+  "version": "0.0.1",
+  "description": "Agnostic Framework Focus Manager",
+  "main": "./dist/index.js",
+  "scripts": {
+    "compile": "tsc",
+    "build": "tsc && rollup -c",
+    "rollup": "rollup -c"
+  },
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tolemac/tolefocus.git"
+  },
+  "keywords": [
+    "focus",
+    "manager",
+    "web"
+  ],
+  "author": "Javier Ros aka tolemaC",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tolemac/tolefocus/issues"
+  },
+  "homepage": "https://github.com/tolemac/tolefocus#readme",
+  "devDependencies": {
+    "@types/core-js": "^0.9.35",
+    "rollup": "^0.41.4",
+    "rollup-plugin-uglify": "^1.0.1",
+    "tslint": "^4.3.1",
+    "typescript": "^2.0.10"
+  }
+}

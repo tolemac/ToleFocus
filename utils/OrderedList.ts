@@ -1,7 +1,7 @@
 export type OrderedItem<TItem> = {
     object: TItem;
     order?: number;
-}
+};
 
 export class OrderedList<TItem> {
     private items: OrderedItem<TItem>[] = [];

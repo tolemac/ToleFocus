@@ -4,14 +4,11 @@ import {
     focusGroupAttributeName, focusManager, autofocusInspectAttributeValue
 } from "../core/FocusManager";
 import { FocusabilityInspector } from "./FocusabilityInspector";
+export { ElementInfo } from "../core/FocusGroup";
 
 export const INSPECT_TOKEN = "TOLEFOCUS_INSPECTOR";
 
-class DomProcessor {
-    getElementInfo(element: HTMLElement) {
-        return element[ELEMENT_INFO_TOKEN] as ElementInfo;
-    }
-
+export class DomProcessor {
     removeGroup(element: HTMLElement) {
         const info = this.getElementInfo(element);
         info.parentGroup.remove(info.group);
@@ -26,6 +23,10 @@ class DomProcessor {
         }
     }
 
+    getElementInfo(element: HTMLElement): ElementInfo {
+        return element[ELEMENT_INFO_TOKEN] as ElementInfo;
+    }
+
     isGroup(element: HTMLElement) {
         const focusGroupAttributeValue = element.getAttribute(focusGroupAttributeName);
         return focusGroupAttributeValue !== null && focusGroupAttributeValue !== undefined;
@@ -34,7 +35,7 @@ class DomProcessor {
     isElement(element: HTMLElement) {
         const focusOrderAttributeValue = element.getAttribute(focusOrderAttributeName);
         return focusableTagNames.indexOf(element.tagName.toLowerCase()) >= 0 ||
-            (focusOrderAttributeValue !== null && focusOrderAttributeValue !== undefined)
+            (focusOrderAttributeValue !== null && focusOrderAttributeValue !== undefined);
     }
 
     processRemovedElement(element: HTMLElement) {

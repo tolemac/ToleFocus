@@ -1,7 +1,7 @@
 import { OrderedList } from "../Utils/OrderedList";
 import { ElementEventsHandler } from "./ElementEventsHandler";
 
-type GroupItem = FocusGroup | HTMLElement;
+export type GroupItem = FocusGroup | HTMLElement;
 export const ELEMENT_INFO_TOKEN = "TOLEFOCUS_INFO";
 
 export type LoopBehavior = "" | "stop" | "loop";
