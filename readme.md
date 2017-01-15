@@ -124,7 +124,7 @@ If you want to hide a element and get focused when it becomes visible you can se
 
 To use using SystemJS you have to map tolefocus to the distributed bundle:
 
-````
+```` javascript
 System.config({
     ...
     ...
@@ -136,4 +136,15 @@ System.config({
     ...
     ...
 })
+````
+
+## Build
+
+Pull request are welcome, to build it:
+
+````
+git clone https://github.com/tolemac/tolefocus.git
+cd tolefocus
+npm install
+npm run build
 ````
