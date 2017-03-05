@@ -1,10 +1,7 @@
-core/**/*
-dom/**/*
+src/**/*
 node_modules
-utils/**/*
 .gitinore
 .npmignore
-index.ts
 readme.md
 rollup.config.js
 tsconfig.json
