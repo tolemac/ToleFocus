@@ -1,9 +1,13 @@
 src/**/*
+dist/test/**/*
+*.map
 node_modules
 .gitinore
 .npmignore
 readme.md
 rollup.config.js
+rollup.min.config.js
 tsconfig.json
 tslint.json
-
+karma-test-shim.js
+karma.conf.js
