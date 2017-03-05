@@ -124,7 +124,7 @@ export class DomProcessor {
         const parentGroup = parentGroupElement ?
             this.getElementInfo(parentGroupElement).group :
             focusManager.root;
-        const {head, tail} = this.getGroupProperties(element);
+        const { head, tail } = this.getGroupProperties(element);
         const group = new FocusGroup(parentGroup, element, head as LoopBehavior, tail as LoopBehavior);
 
         parentGroup.add(group, this.getElementOrder(element));
@@ -167,6 +167,8 @@ export class DomProcessor {
         } else if (this.isElement(element)) {
             this.addElement(element);
         }
+
+        this.processFromElement(element);
     }
 
     processFromElement(rootElement: HTMLElement) {

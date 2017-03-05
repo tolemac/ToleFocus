@@ -5,7 +5,10 @@
   "scripts": {
     "compile": "tsc -p src",
     "build": "tsc -p src && rollup -c rollup.config.js && rollup -c rollup.min.config.js",
-    "rollup": "rollup -c"
+    "rollup": "rollup -c",
+    "build:watch": "tsc -w -p src",
+    "build:test:watch": "tsc -w -p src -module umd",
+    "test": "npm run compile && concurrently \"npm run build:test:watch\" \"karma start karma.conf.js\""
   },
   "entry": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -26,8 +29,13 @@
   "homepage": "https://github.com/tolemac/tolefocus#readme",
   "devDependencies": {
     "@types/core-js": "^0.9.35",
+    "core-js": "^2.4.1",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
     "rollup": "^0.41.4",
     "rollup-plugin-uglify": "^1.0.1",
+    "systemjs": "^0.20.9",
     "tslint": "^4.3.1",
     "typescript": "^2.0.10"
   }
