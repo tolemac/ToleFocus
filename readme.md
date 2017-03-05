@@ -2,9 +2,6 @@
 [![NPM version](https://badge.fury.io/js/tolefocus.svg)](http://badge.fury.io/js/tolefocus) [![Dependency Status](https://david-dm.org/tolemac/tolefocus.svg)](https://david-dm.org/tolemac/tolefocus) [![devDependency Status](https://david-dm.org/tolemac/tolefocus/dev-status.svg)](https://david-dm.org/tolemac/tolefocus#info=devDependencies)
 > JavaScript Framework agnostic Focus Manager coded in TypeScript
 
-**This library is in alpha state, use it at your own risk. Pull requests are welcome.**  
-**There aren't test. I would love it if you could make them.**
-
 ToleFocus is a small library to manage focus on JavaScript web applications. ToleFocus use ES6 methods, like `array.findIndex`, and require some polyfill like [core-js](https://github.com/zloirock/core-js) in order to work in old browsers, like IE.
 
 ToleFocus is highly inspired on [Angular Focus Manager](https://github.com/obogo/angular-focusmanager) coded by [Rob Tylor](https://github.com/roboncode).
@@ -162,4 +159,10 @@ git clone https://github.com/tolemac/tolefocus.git
 cd tolefocus
 npm install
 npm run build
+````
+
+You can launch test suite using:
+
+````
+npm run test
 ````
