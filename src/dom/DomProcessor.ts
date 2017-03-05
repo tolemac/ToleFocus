@@ -167,8 +167,14 @@ export class DomProcessor {
         } else if (this.isElement(element)) {
             this.addElement(element);
         }
+    }
 
-        this.processFromElement(element);
+    removeChildrenFromElement(rootElement: HTMLElement) {
+        const elements = rootElement.querySelectorAll(this.getFocusElementsSelector());
+
+        for (let i = 0, j = elements.length; i < j; i++) {
+            this.processRemovedElement(elements.item(i) as HTMLElement);
+        }
     }
 
     processFromElement(rootElement: HTMLElement) {

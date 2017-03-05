@@ -90,7 +90,6 @@ function initTesting() {
   return Promise.all(
 
     allSpecFiles.map(function (moduleName) {
-      console.log(moduleName);
       return System.import(moduleName);
     })
   )

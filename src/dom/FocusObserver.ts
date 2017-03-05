@@ -45,9 +45,11 @@ export class FocusObserver {
         if (mutation.type === "childList") {
             for (let i = 0, j = mutation.addedNodes.length; i < j; i++) {
                 domProcessor.processAddedElement(mutation.addedNodes.item(i) as HTMLElement);
+                domProcessor.processFromElement(mutation.addedNodes.item(i) as HTMLElement);
             }
             for (let i = 0, j = mutation.removedNodes.length; i < j; i++) {
                 domProcessor.processRemovedElement(mutation.removedNodes.item(i) as HTMLElement);
+                domProcessor.removeChildrenFromElement(mutation.removedNodes.item(i) as HTMLElement);
             }
         }
     }

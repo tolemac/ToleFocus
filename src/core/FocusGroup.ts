@@ -58,7 +58,7 @@ export class FocusGroup {
     }
 
     fistElementRecursively(): HTMLElement {
-        for (let {object} of this.items.orderedItems) {
+        for (let { object } of this.items.orderedItems) {
             if (!(object instanceof FocusGroup)) {
                 return object;
             } else {
@@ -91,7 +91,7 @@ export class FocusGroup {
         elementIndex: number
     } {
         let index = 0;
-        for (let {object} of this.items.orderedItems) {
+        for (let { object } of this.items.orderedItems) {
             if (!(object instanceof FocusGroup)) {
                 if (object === element) {
                     return { group: this, elementIndex: index };
@@ -142,6 +142,9 @@ export class FocusGroup {
 
         const nextItem = this.items.orderedItems[nextItemIndex];
         if (nextItem.object instanceof FocusGroup) {
+            if (nextItem.object.count === 0) {
+                return this.getNextElement(nextItem.object.groupElement);
+            }
             return nextItem.object.fistElementRecursively();
         } else {
             return nextItem.object;

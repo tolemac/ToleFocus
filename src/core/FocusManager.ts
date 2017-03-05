@@ -1,5 +1,6 @@
 import { FocusGroup, LoopBehavior } from "./FocusGroup";
 import { domProcessor } from "../dom/DomProcessor";
+import { FocusabilityInspector } from "../dom/FocusabilityInspector";
 
 export const focusGroupAttributeName = "focus-group";
 export const focusOrderAttributeName = "focus-order";
@@ -57,6 +58,7 @@ export class FocusManager {
             return;
         }
         this._enabled = false;
+        FocusabilityInspector.stopAll();
     }
 
     enable(rootElement?: HTMLElement,

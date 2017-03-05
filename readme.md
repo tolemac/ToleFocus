@@ -44,8 +44,22 @@ You can set the focus order:
 ```` html
 <input /> <!-- first control in focus order -->
 <input /> <!-- third control in focus order -->
-<input focus-order="2" /> <!-- second control in focus order -->
+<input focus-order="1" /> <!-- second control in focus order -->
 ````
+
+Focus order is zero based, you can set negative focus order to any element, the negative focus order are pushed to the first positions.
+
+```` html
+<input id='i1'/> <!-- second order -->
+<input id='i2' focus-order='-2' /> <!-- first order -->
+<input id='i3' /> <!-- third order -->
+<input id='i4' focus-order='2' /> <!-- fourth order -->
+<input id='i5' /> <!-- fifth order -->
+<input id='i6' /> <!-- seventh order -->
+<input id='i7' focus-order='4' /> <!-- sixth order -->
+<input id='i8' /> <!-- eighth order -->
+````
+
 ### Focus groups
 
 You can create focus groups where each element can to have his own focus-order in the group.
