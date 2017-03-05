@@ -1,8 +1,7 @@
 node_modules
 npm-debug.*
 link-checker-results.txt
-**/*.js
-*.js.map
+src/**/*.js
+**/*.js.map
 dist/**/*
-!rollup.config.js
-!rollup.min.config.js
+

@@ -124,7 +124,7 @@ export class DomProcessor {
         const parentGroup = parentGroupElement ?
             this.getElementInfo(parentGroupElement).group :
             focusManager.root;
-        const {head, tail} = this.getGroupProperties(element);
+        const { head, tail } = this.getGroupProperties(element);
         const group = new FocusGroup(parentGroup, element, head as LoopBehavior, tail as LoopBehavior);
 
         parentGroup.add(group, this.getElementOrder(element));
@@ -166,6 +166,14 @@ export class DomProcessor {
             this.addGroup(element);
         } else if (this.isElement(element)) {
             this.addElement(element);
+        }
+    }
+
+    removeChildrenFromElement(rootElement: HTMLElement) {
+        const elements = rootElement.querySelectorAll(this.getFocusElementsSelector());
+
+        for (let i = 0, j = elements.length; i < j; i++) {
+            this.processRemovedElement(elements.item(i) as HTMLElement);
         }
     }
 

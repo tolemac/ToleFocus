@@ -1,5 +1,6 @@
-import { FocusGroup } from "./FocusGroup";
+import { FocusGroup, LoopBehavior } from "./FocusGroup";
 import { domProcessor } from "../dom/DomProcessor";
+import { FocusabilityInspector } from "../dom/FocusabilityInspector";
 
 export const focusGroupAttributeName = "focus-group";
 export const focusOrderAttributeName = "focus-order";
@@ -18,8 +19,11 @@ export class FocusManager {
         return this._enabled;
     }
 
-    focusNext(currentElement: HTMLElement) {
-        const {group} = this.root.locateElementRecursively(currentElement);
+    focusNext(currentElement?: HTMLElement) {
+        if (!currentElement) {
+            currentElement = document.activeElement as any;
+        }
+        const { group } = this.root.locateElementRecursively(currentElement);
         if (group) {
             let element = group.getNextElement(currentElement);
             while (!domProcessor.canElementGetFocus(element)) {
@@ -32,8 +36,11 @@ export class FocusManager {
         }
     }
 
-    focusPrior(currentElement: HTMLElement) {
-        const {group} = this.root.locateElementRecursively(currentElement);
+    focusPrior(currentElement?: HTMLElement) {
+        if (!currentElement) {
+            currentElement = document.activeElement as any;
+        }
+        const { group } = this.root.locateElementRecursively(currentElement);
         if (group) {
             let element = group.getPriorElement(currentElement);
             while (!domProcessor.canElementGetFocus(element)) {
@@ -51,16 +58,20 @@ export class FocusManager {
             return;
         }
         this._enabled = false;
+        FocusabilityInspector.stopAll();
     }
 
-    enable(rootElement?: HTMLElement) {
+    enable(rootElement?: HTMLElement,
+        headBehavior: LoopBehavior = "loop",
+        tailBehavior: LoopBehavior = "loop") {
+
         if (this._enabled) {
             this.disable();
         }
         if (!rootElement) {
             rootElement = document.body;
         }
-        this._root = new FocusGroup(null, rootElement, "loop", "loop");
+        this._root = new FocusGroup(null, rootElement, headBehavior, tailBehavior);
 
         this._enabled = true;
 

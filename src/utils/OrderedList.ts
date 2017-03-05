@@ -3,6 +3,10 @@ export type OrderedItem<TItem> = {
     order?: number;
 };
 
+function isDefined(variable: any) {
+    return variable !== undefined;
+}
+
 export class OrderedList<TItem> {
     private items: OrderedItem<TItem>[] = [];
     orderedItems: OrderedItem<TItem>[] = [];
@@ -44,10 +48,11 @@ export class OrderedList<TItem> {
 
     private reorder() {
         const result = [] as OrderedItem<TItem>[];
-        const withOrderItems = this.items.filter(item => !!item.order);
-        const withoutOrderItems = this.items.filter(item => !item.order);
+        const withNegativeOrder = this.items.filter(item => isDefined(item.order) && item.order < 0);
+        const withOrderItems = this.items.filter(item => isDefined(item.order) && item.order >= 0);
+        const withoutOrderItems = this.items.filter(item => !isDefined(item.order));
         withOrderItems.forEach(item => {
-            result[item.order - 1] = item;
+            result[item.order] = item;
         });
         let i2 = 0;
         for (let i = 0, j = this.items.length; i < j; i++) {
@@ -55,6 +60,9 @@ export class OrderedList<TItem> {
                 result[i] = withoutOrderItems[i2++];
             }
         }
+        result.splice(0, 0, ...withNegativeOrder.sort((a: OrderedItem<TItem>, b: OrderedItem<TItem>) => {
+            return b.order - a.order;
+        }));
 
         this.orderedItems = [];
         result.forEach(item => {

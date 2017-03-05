@@ -2,9 +2,6 @@
 [![NPM version](https://badge.fury.io/js/tolefocus.svg)](http://badge.fury.io/js/tolefocus) [![Dependency Status](https://david-dm.org/tolemac/tolefocus.svg)](https://david-dm.org/tolemac/tolefocus) [![devDependency Status](https://david-dm.org/tolemac/tolefocus/dev-status.svg)](https://david-dm.org/tolemac/tolefocus#info=devDependencies)
 > JavaScript Framework agnostic Focus Manager coded in TypeScript
 
-**This library is in alpha state, use it at your own risk. Pull requests are welcome.**  
-**There aren't test. I would love it if you could make them.**
-
 ToleFocus is a small library to manage focus on JavaScript web applications. ToleFocus use ES6 methods, like `array.findIndex`, and require some polyfill like [core-js](https://github.com/zloirock/core-js) in order to work in old browsers, like IE.
 
 ToleFocus is highly inspired on [Angular Focus Manager](https://github.com/obogo/angular-focusmanager) coded by [Rob Tylor](https://github.com/roboncode).
@@ -44,8 +41,22 @@ You can set the focus order:
 ```` html
 <input /> <!-- first control in focus order -->
 <input /> <!-- third control in focus order -->
-<input focus-order="2" /> <!-- second control in focus order -->
+<input focus-order="1" /> <!-- second control in focus order -->
 ````
+
+Focus order is zero based, you can set negative focus order to any element, the negative focus order are pushed to the first positions.
+
+```` html
+<input id='i1'/> <!-- second order -->
+<input id='i2' focus-order='-2' /> <!-- first order -->
+<input id='i3' /> <!-- third order -->
+<input id='i4' focus-order='2' /> <!-- fourth order -->
+<input id='i5' /> <!-- fifth order -->
+<input id='i6' /> <!-- seventh order -->
+<input id='i7' focus-order='4' /> <!-- sixth order -->
+<input id='i8' /> <!-- eighth order -->
+````
+
 ### Focus groups
 
 You can create focus groups where each element can to have his own focus-order in the group.
@@ -148,4 +159,10 @@ git clone https://github.com/tolemac/tolefocus.git
 cd tolefocus
 npm install
 npm run build
+````
+
+You can launch test suite using:
+
+````
+npm run test
 ````
