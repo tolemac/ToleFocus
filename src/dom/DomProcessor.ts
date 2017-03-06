@@ -170,6 +170,9 @@ export class DomProcessor {
     }
 
     removeChildrenFromElement(rootElement: HTMLElement) {
+        if (!rootElement.getAttribute) {
+            return;
+        }
         const elements = rootElement.querySelectorAll(this.getFocusElementsSelector());
 
         for (let i = 0, j = elements.length; i < j; i++) {
@@ -178,6 +181,9 @@ export class DomProcessor {
     }
 
     processFromElement(rootElement: HTMLElement) {
+        if (!rootElement.getAttribute) {
+            return;
+        }
         const elements = rootElement.querySelectorAll(this.getFocusElementsSelector());
 
         for (let i = 0, j = elements.length; i < j; i++) {
