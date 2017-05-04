@@ -322,6 +322,62 @@ describe("Focusing elements -> ", () => {
             done();
         }, 1);
     });
+    it("Add custom selector (.select2-selection) to focusable selector", (done: any) => {
+        focusManager.addCustomSelector(".select2-selection");
+        const elem = document.createElement("div");
+        // class="select2-hidden-accessible"
+        elem.innerHTML = `
+        <a id='i1'></a>
+        <select id='i2'></select>
+        <span id="select2" class="select2-selection"></span>
+        <button type="button" id='i3'></button>
+        <input id='i4' />
+        <textarea id='i5' autofocus></textarea>
+        `;
+        container.appendChild(elem);
 
+        setTimeout(() => {
+            expect(focusManager.root.count).toEqual(6);
 
+            const expectArray = ["i5", "i4", "i3", "select2", "i2", "i1"];
+            const testArray = [];
+            for (let i = 0; i < 6; i++) {
+                testArray.push(document.activeElement.id);
+                focusManager.focusPrior();
+            }
+            expect(JSON.stringify(expectArray)).toEqual(JSON.stringify(testArray));
+            container.removeChild(elem);
+            done();
+        }, 1);
+    });
+    it("Add canElementGetFocusHandler to disable focus on '.select2-hidden-accessible' selector", (done: any) => {
+        focusManager.setCanElementGetFocusHandler((element) => {
+            if (element.classList.contains("select2-hidden-accessible")) {
+                return false;
+            }
+        });
+        const elem = document.createElement("div");
+        elem.innerHTML = `
+        <a id='i1'></a>
+        <select id='i2' class="select2-hidden-accessible"></select>        
+        <button type="button" id='i3'></button>
+        <input id='i4' />
+        <textarea id='i5' autofocus></textarea>
+        `;
+        container.appendChild(elem);
+
+        setTimeout(() => {
+            expect(focusManager.root.count).toEqual(5);
+
+            const expectArray = ["i5", "i4", "i3", "i1"];
+            const testArray = [];
+            for (let i = 0; i < 4; i++) {
+                testArray.push(document.activeElement.id);
+                focusManager.focusPrior();
+            }
+            expect(JSON.stringify(expectArray)).toEqual(JSON.stringify(testArray));
+            container.removeChild(elem);
+            done();
+        }, 1);
+    });
 });

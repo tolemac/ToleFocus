@@ -1,6 +1,7 @@
 import { FocusGroup, LoopBehavior } from "./FocusGroup";
 import { domProcessor } from "../dom/DomProcessor";
 import { FocusabilityInspector } from "../dom/FocusabilityInspector";
+import { setPolyfills } from "../utils/Polyfills";
 
 export const focusGroupAttributeName = "focus-group";
 export const focusOrderAttributeName = "focus-order";
@@ -17,6 +18,18 @@ export class FocusManager {
     }
     get enabled() {
         return this._enabled;
+    }
+
+    addCustomSelector(selector: string) {
+        domProcessor.addCustomSelector(selector);
+    }
+
+    removeCustomSelector(selector: string) {
+        domProcessor.removeCustomSelector(selector);
+    }
+
+    setCanElementGetFocusHandler(handler: (element: HTMLElement) => boolean) {
+        domProcessor.setCanElementGetFocusHandler(handler);
     }
 
     focusNext(currentElement?: HTMLElement) {
@@ -64,6 +77,7 @@ export class FocusManager {
     enable(rootElement?: HTMLElement,
         headBehavior: LoopBehavior = "loop",
         tailBehavior: LoopBehavior = "loop") {
+        setPolyfills();
 
         if (this._enabled) {
             this.disable();

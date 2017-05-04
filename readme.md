@@ -132,6 +132,56 @@ If you want to hide a element and get focused when it becomes visible you can se
 <button onclick="showHiddenInput()">Show</button>
 ````
 
+### Custom focusable elements
+
+You can add selectors to handle focusable elements, for example you can add elements with class `select2-selection` as focusable elements, then `tolefocus` detect this elements as focusables.
+
+````javascript
+focusManager.addCustomSelector(".select2-selection");
+````
+
+### Decide if element can get the focus
+
+When `tolefocus` going to set focus to an element, it ask if the element can get focus, by default it look if element is visible and not disabled this way:
+
+````javascript
+    const visible = element.offsetParent !== null;
+    const disable = !!element["disabled"];
+    return visible && !disable;
+````
+
+You can set a handler to decide if element can get focus, for example you can do that elements with class `select2-hidden-accessible` don't get the focus:
+
+````javascript
+    focusManager.setCanElementGetFocusHandler((element) => {
+        if (element.classList.contains("select2-hidden-accessible")) {
+            return false;
+        }
+    });
+````
+
+If handler don't return a value `tolefocus` decide via `visible` and `disabled`.
+
+#### Select2 support
+
+`Select2` hide the `<select>` element and redirect focus to a self created `<span>`, `tolefocus` can't detect this behivor without help, you have to mark the `span` as focusable and disable the select to get focus, you can do it this way:
+
+````javascript
+    // Select2 Focus management.
+    focusManager.addCustomSelector(".select2-selection");
+    focusManager.setCanElementGetFocusHandler((element) => {
+        if (element.classList.contains("select2-hidden-accessible")) {
+            return false;
+        }
+    });
+    // end select2 Focus management
+
+    // Enable tolefocus.
+    focusManager.enable();
+    focusObserver.enable();
+````
+
+
 ## SystemJS config
 
 To use using SystemJS you have to map tolefocus to the distributed bundle:

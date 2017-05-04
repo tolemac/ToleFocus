@@ -1,7 +1,7 @@
 import { focusManager } from "./FocusManager";
 
 const TAB_KEYCODE = 9;
-const ENTER_KEYCODE = 13;
+// const ENTER_KEYCODE = 13;
 
 export class ElementEventsHandler {
     constructor(private element: HTMLElement) {

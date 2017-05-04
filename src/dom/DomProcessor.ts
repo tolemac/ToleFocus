@@ -10,18 +10,45 @@ export const INSPECT_TOKEN = "TOLEFOCUS_INSPECTOR";
 
 export class DomProcessor {
 
+    private _customSelectors: string[] = [];
+    private _canElementGetFocusHandler: (element: HTMLElement) => boolean;
+
+    setCanElementGetFocusHandler(handler: (element: HTMLElement) => boolean) {
+        this._canElementGetFocusHandler = handler;
+    }
+
+    addCustomSelector(selector: string) {
+        this._customSelectors.push(selector);
+    }
+
+    removeCustomSelector(selector: string) {
+        const index = this._customSelectors.indexOf(selector);
+        if (index) {
+            this._customSelectors.splice(index, 1);
+        }
+    }
+
     private getFocusElementsSelector() {
-        return [...focusableTagNames, "[" + focusGroupAttributeName + "]", "[" + focusOrderAttributeName + "]"].join(",");
+        return [
+            ...focusableTagNames,
+            "[" + focusGroupAttributeName + "]",
+            "[" + focusOrderAttributeName + "]",
+            ...this._customSelectors
+        ].join(",");
     }
 
     removeGroup(element: HTMLElement) {
         const info = this.getElementInfo(element);
-        info.parentGroup.remove(info.group);
+        if (info) {
+            info.parentGroup.remove(info.group);
+        }
     }
 
     removeElement(element: HTMLElement) {
         const info = this.getElementInfo(element);
-        info.parentGroup.remove(element);
+        if (info) {
+            info.parentGroup.remove(element);
+        }
 
         if (element[INSPECT_TOKEN]) {
             (element[INSPECT_TOKEN] as FocusabilityInspector).stop();
@@ -39,7 +66,7 @@ export class DomProcessor {
 
     isElement(element: HTMLElement) {
         const focusOrderAttributeValue = element.getAttribute(focusOrderAttributeName);
-        return focusableTagNames.indexOf(element.tagName.toLowerCase()) >= 0 ||
+        return element.matches(this.getFocusElementsSelector()) ||
             (focusOrderAttributeValue !== null && focusOrderAttributeValue !== undefined);
     }
 
@@ -104,7 +131,7 @@ export class DomProcessor {
         if (value === "") {
             return { head: undefined, tail: undefined };
         }
-        const parts = value.split(" ").filter(part => part !== "").filter((value, index) => index < 2);
+        const parts = value.split(" ").filter(part => part !== "").filter((_value, index) => index < 2);
 
         let tail: string, head: string;
 
@@ -131,6 +158,12 @@ export class DomProcessor {
     }
 
     canElementGetFocus(element: HTMLElement) {
+        if (this._canElementGetFocusHandler) {
+            const result = this._canElementGetFocusHandler(element);
+            if (result !== undefined) {
+                return result;
+            }
+        }
         const visible = element.offsetParent !== null;
         const disable = !!element["disabled"];
         return visible && !disable;
